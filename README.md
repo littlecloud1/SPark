@@ -2,14 +2,8 @@
 
 The project contains three different part of codes
 
-1. RPI
+1. RPI:car sensor
 
-car sensor
+2. backend:define the database and AJAX API
 
-2. backend
-
-define the database and AJAX API
-
-3. frontend
-
-webpage
+3. frontend:webpage
