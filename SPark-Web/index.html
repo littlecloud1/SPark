@@ -1,34 +1,146 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="">
 <head>
-    <meta charset="UTF-8">
-    <title>test</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<title>Bistup</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<link href="layout/styles/layout.css" rel="stylesheet" type="text/css" media="all">
 </head>
 
-<body>
-<button type="button" id ="btn">Click Me!</button>
-
-<div id="doc"></div>
-</body>
-
 <script>
+var x = document.getElementById("demo");
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+    } else { 
+        x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
 
-    href="../availability/retrieve/"
-    position="33.649022,-117.839450"
+function showPosition(position) {
+    var lat = position.coords.latitude;
+    var lon = position.coords.longitude;
+    var latlon = new google.maps.LatLng(lat, lon)
+ 
 
-     $("#btn").click(function(){
-        $.ajax({
-            url: href,
-            type: 'GET',
-            dataType: 'json',
-            data:{position:position},
-            success: function(result){
-            console.log(result['price']);
-            console.log(result['position']);
-                $("#doc").html("price="+result['price']+"<br>position="+result['position']);
-        }});
-    });
+    var myOptions = {
+    center:latlon,zoom:15,
+    mapTypeId:google.maps.MapTypeId.ROADMAP,
+    mapTypeControl:false,
+    navigationControlOptions:{style:google.maps.NavigationControlStyle.SMALL}
+    }
+    
+    var map = new google.maps.Map(document.getElementById("googleMap"), myOptions);
+    var marker = new google.maps.Marker({position:latlon,map:map,title:"You are here!"});
+}
 
+function showError(error) {
+    switch(error.code) {
+        case error.PERMISSION_DENIED:
+            x.innerHTML = "User denied the request for Geolocation."
+            break;
+        case error.POSITION_UNAVAILABLE:
+            x.innerHTML = "Location information is unavailable."
+            break;
+        case error.TIMEOUT:
+            x.innerHTML = "The request to get user location timed out."
+            break;
+        case error.UNKNOWN_ERROR:
+            x.innerHTML = "An unknown error occurred."
+            break;
+    }
+}
+
+function Reservation(){
+
+	 document.getElementById("frm1").submit();
+
+}
+
+
+window.onload =getLocation;
 </script>
+
+
+<body id="top">
+<div class="wrapper row0">
+  <div id="topbar" class="hoc clear"> 
+    <div class="fl_left">
+      <ul class="nospace">
+        <li><a href="index.html"><i class="fas fa-home fa-lg"></i></a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Login</a></li>
+        <li><a href="#">Register</a></li>
+      </ul>
+    </div>
+    <div class="fl_right">
+      <ul class="nospace">
+        <li><i class="fas fa-phone rgtspace-5"></i> +00 (123) 456 7890</li>
+        <li><i class="fas fa-envelope rgtspace-5"></i> info@domain.com</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper row2">
+  <nav id="mainav" class="hoc clear"> 
+    <ul class="clear">
+      <li class="active"><a href="index.html">Home</a></li>
+      <li><a class="drop" href="#">Pages</a>
+        <ul>
+          <li><a href="pages/gallery.html">Gallery</a></li>
+        </ul>
+      </li>
+      <li><a class="drop" href="#">Dropdown</a>
+        <ul>
+          <li><a href="#">Level 2</a></li>
+          <li><a class="drop" href="#">Level 2 + Drop</a>
+            <ul>
+              <li><a href="#">Level 3</a></li>
+              <li><a href="#">Level 3</a></li>
+              <li><a href="#">Level 3</a></li>
+            </ul>
+          </li>
+          <li><a href="#">Level 2</a></li>
+        </ul>
+      </li>
+      <li><a href="#">Link Text</a></li>
+      <li><a href="#">Link Text</a></li>
+      <li><a href="#">Link Text</a></li>
+      <li><a href="#">Long Link Text</a></li>
+    </ul>
+  </nav>
+</div>
+
+<div class="wrapper bgded overlay" style="background-image:url('images/demo/backgrounds/01.png');">
+  <div id="pageintro" class="hoc clear"> 
+    <article>
+      <p>Reserved your parking lot right now.</p>
+	<form id="frm1" action="">
+  <input type="text" name="plateno" placeholder= "Plate No">
+  <input class="btn" type="button" onclick="Reservation()" value="Submit">
+</form>
+    </article>
+
+  </div>
+</div>
+
+<div id="googleMap" style="width:100%;height:400px;"></div>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDg1ZIu7sQZsrWM-mnHUeCKyQSuZuVeeDM"></script>
+<div class="wrapper row5">
+  <div id="copyright" class="hoc clear"> 
+
+    <p class="fl_left">Copyright &copy; 2018 - All Rights Reserved - <a href="#">Domain Name</a></p>
+    <p class="fl_right">Template by <a target="_blank" href="http://www.os-templates.com/" title="Free Website Templates">OS Templates</a></p>
+
+  </div>
+</div>
+
+<a id="backtotop" href="#top"><i class="fas fa-chevron-up"></i></a>
+<!-- JAVASCRIPTS -->
+<script src="layout/scripts/jquery.min.js"></script>
+<script src="layout/scripts/jquery.backtotop.js"></script>
+<script src="layout/scripts/jquery.mobilemenu.js"></script>
+</body>
 </html>
