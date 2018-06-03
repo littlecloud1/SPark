@@ -8,7 +8,10 @@
 </head>
 
 <script>
-var x = document.getElementById("demo");
+var lat ;
+var lon ;
+var x = document.getElementById("greeting");
+
 function getLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition, showError);
@@ -18,8 +21,8 @@ function getLocation() {
 }
 
 function showPosition(position) {
-    var lat = position.coords.latitude;
-    var lon = position.coords.longitude;
+    lat = position.coords.latitude;
+    lon = position.coords.longitude;
     var latlon = new google.maps.LatLng(lat, lon)
  
 
@@ -52,8 +55,19 @@ function showError(error) {
 }
 
 function Reservation(){
-
-	 document.getElementById("frm1").submit();
+	href="../availability/retrieve/";
+	//document.getElementById("frm1").submit();
+	var position = lat + ',' + 'lon';
+	$.ajax({
+            url: href,
+            type: 'GET',
+            dataType: 'json',
+            data:{position:position},
+            success: function(result){
+            console.log(result['price']);
+            console.log(result['position']);
+                $("#doc").html("price="+result['price']+"<br>position="+result['position']);
+     }});
 
 }
 
@@ -116,7 +130,7 @@ window.onload =getLocation;
 <div class="wrapper bgded overlay" style="background-image:url('images/demo/backgrounds/01.png');">
   <div id="pageintro" class="hoc clear"> 
     <article>
-      <p>Reserved your parking lot right now.</p>
+      <p id="greeting">Reserved your parking lot right now.</p>
 	<form id="frm1" action="">
   <input type="text" name="plateno" placeholder= "Plate No">
   <input class="btn" type="button" onclick="Reservation()" value="Submit">
