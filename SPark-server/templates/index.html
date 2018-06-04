@@ -1,17 +1,16 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="">
 <head>
 <title>SPark</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<link href="layout/styles/layout.css" rel="stylesheet" type="text/css" media="all">
+<link href="{% static "layout/styles/layout.css"%}" rel="stylesheet" type="text/css" media="all">
 </head>
-<!-- JAVASCRIPTS 
-<script src="layout/scripts/jquery.min.js"></script>
-<script src="layout/scripts/jquery.backtotop.js"></script>
-<script src="layout/scripts/jquery.mobilemenu.js"></script>
--->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+ <!--JAVASCRIPTS -->
+<script src="{% static "layout/scripts/jquery.min.js"%}"></script>
+<script src="{% static "layout/scripts/jquery.backtotop.js"%}"></script>
+<script src="{% static "layout/scripts/jquery.mobilemenu.js"%}"></script>
 <script>
 var lat ;
 var lon ;
@@ -102,7 +101,7 @@ window.onload =getLocation;
 
 
 
-<div class="wrapper bgded overlay" style="background-image:url('images/demo/backgrounds/01.png');">
+<div class="wrapper bgded overlay" style="background-image:url("{% static "images/demo/backgrounds/01.png"%}");">
   <div id="pageintro" class="hoc clear"> 
     <article>
       <p id="greeting">Reserved your parking lot right now.</p>
