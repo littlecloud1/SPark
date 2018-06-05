@@ -8,7 +8,7 @@
 
 <body>
 <button type="button" id ="btn">Click Me!</button>
-<button type="button" id ="btn2">Click Me!</button>
+<button type="button" id ="btn2">Click Me2!</button>
 
 <div id="doc"></div>
 </body>
@@ -17,13 +17,16 @@
 
     href="../availability/retrieve/"
     position="33.649022,-117.839450"
+     plate="1"
 
      $("#btn").click(function(){
         $.ajax({
             url: href,
             type: 'GET',
             dataType: 'json',
-            data:{position:position},
+            data:{position:position,
+            plate:plate
+            },
             success: function(result){
             console.log(result['price']);
             console.log(result['position']);
@@ -36,7 +39,7 @@
     spotID="1"
     plate="1"
 
-     $("#btn").click(function(){
+     $("#btn2").click(function(){
         $.ajax({
             url: href,
             type: 'GET',
@@ -45,7 +48,7 @@
             plate:plate
             },
             success: function(result){
-            console.log(result);
+            console.log(result['result']);
         }});
     });
 

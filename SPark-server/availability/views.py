@@ -50,3 +50,12 @@ def register(request):
         s.save()
 
     return HttpResponse("registered")
+
+def confirm(request):
+    # get a spot
+
+    response_data = {}
+
+    response_data['result'] = True
+
+    return JsonResponse(response_data);

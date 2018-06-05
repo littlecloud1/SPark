@@ -20,4 +20,5 @@ urlpatterns = [
     url(r'^update/', views.update),
     url(r'^retrieve/', views.retrieve),
     url(r'^register/', views.register),
+    url(r'^confirm/', views.confirm),
 ]
