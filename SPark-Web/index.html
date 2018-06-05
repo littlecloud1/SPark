@@ -1,18 +1,25 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="">
 <head>
-<title>Bistup</title>
+<title>SPark</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<link href="layout/styles/layout.css" rel="stylesheet" type="text/css" media="all">
+<link href="{% static "layout/styles/layout.css"%}" rel="stylesheet" type="text/css" media="all">
 </head>
-
+ <!--JAVASCRIPTS -->
+<script src="{% static "layout/scripts/jquery.min.js"%}"></script>
+<script src="{% static "layout/scripts/jquery.backtotop.js"%}"></script>
+<script src="{% static "layout/scripts/jquery.mobilemenu.js"%}"></script>
 <script>
 var lat ;
 var lon ;
 var x = document.getElementById("greeting");
+var map;
+var plate;
 
 function getLocation() {
+	$("#confirm").hide();
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition, showError);
     } else { 
@@ -24,16 +31,16 @@ function showPosition(position) {
     lat = position.coords.latitude;
     lon = position.coords.longitude;
     var latlon = new google.maps.LatLng(lat, lon)
- 
+	console.log(lat+','+lon);
 
     var myOptions = {
-    center:latlon,zoom:15,
+    center:latlon,zoom:14,
     mapTypeId:google.maps.MapTypeId.ROADMAP,
     mapTypeControl:false,
     navigationControlOptions:{style:google.maps.NavigationControlStyle.SMALL}
     }
     
-    var map = new google.maps.Map(document.getElementById("googleMap"), myOptions);
+    map = new google.maps.Map(document.getElementById("googleMap"), myOptions);
     var marker = new google.maps.Marker({position:latlon,map:map,title:"You are here!"});
 }
 
@@ -55,85 +62,88 @@ function showError(error) {
 }
 
 function Reservation(){
+
 	href="../availability/retrieve/";
-	//document.getElementById("frm1").submit();
-	var position = lat + ',' + 'lon';
+	plate = document.getElementById("frm")["plateno"].value;
+	var position = lat + ',' + lon;
+	var price;
+	var loc; 
 	$.ajax({
             url: href,
             type: 'GET',
             dataType: 'json',
-            data:{position:position},
+            data:{position:position,plate:plate},
             success: function(result){
             console.log(result['price']);
             console.log(result['position']);
-                $("#doc").html("price="+result['price']+"<br>position="+result['position']);
-     }});
+			console.log(result['spotID']);
+			loc = result['position'].split(' ').join('');
+			
+			loc = loc.split(',');
+			$("#spotinfo").show();
+			$("#spotinfo").html("ID:"+result['spotID'] +
+			"<br> price="+result['price']+
+			"<br>position="+result['position']);
+			spotID = result['spotID'];
+			$("#confirm").show();
+			$("#request").hide();
+    var lo = new google.maps.LatLng(loc[0], loc[1]);
+	map.setCenter(lo);
+	var marker2 = new google.maps.Marker({
+		position:lo,
+		map:map,
+		title:"$"+result["price"].toString()
+	});
+	
+	 document.getElementById("frm")["plateno"].value;
+	
+	}});
+	
+}
+	
+function  ConfirmReservation(){
+ href="../availability/confirm/"
+	
+
+    $.ajax({
+            url: href,
+            type: 'GET',
+            dataType: 'json',
+            data:{spotID:spotID,
+            plate:plate
+            },
+            success: function(result){
+            console.log(result['result']);
+        
+	if(result['result'] == true) $("#spotinfo").html("success!");
+	else $("#spotinfo").html("fail!");
+		
+	}});
+    
+
+
+
 
 }
+
+
 
 
 window.onload =getLocation;
 </script>
 
 
-<body id="top">
-<div class="wrapper row0">
-  <div id="topbar" class="hoc clear"> 
-    <div class="fl_left">
-      <ul class="nospace">
-        <li><a href="index.html"><i class="fas fa-home fa-lg"></i></a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Contact</a></li>
-        <li><a href="#">Login</a></li>
-        <li><a href="#">Register</a></li>
-      </ul>
-    </div>
-    <div class="fl_right">
-      <ul class="nospace">
-        <li><i class="fas fa-phone rgtspace-5"></i> +00 (123) 456 7890</li>
-        <li><i class="fas fa-envelope rgtspace-5"></i> info@domain.com</li>
-      </ul>
-    </div>
-  </div>
-</div>
 
-<div class="wrapper row2">
-  <nav id="mainav" class="hoc clear"> 
-    <ul class="clear">
-      <li class="active"><a href="index.html">Home</a></li>
-      <li><a class="drop" href="#">Pages</a>
-        <ul>
-          <li><a href="pages/gallery.html">Gallery</a></li>
-        </ul>
-      </li>
-      <li><a class="drop" href="#">Dropdown</a>
-        <ul>
-          <li><a href="#">Level 2</a></li>
-          <li><a class="drop" href="#">Level 2 + Drop</a>
-            <ul>
-              <li><a href="#">Level 3</a></li>
-              <li><a href="#">Level 3</a></li>
-              <li><a href="#">Level 3</a></li>
-            </ul>
-          </li>
-          <li><a href="#">Level 2</a></li>
-        </ul>
-      </li>
-      <li><a href="#">Link Text</a></li>
-      <li><a href="#">Link Text</a></li>
-      <li><a href="#">Link Text</a></li>
-      <li><a href="#">Long Link Text</a></li>
-    </ul>
-  </nav>
-</div>
 
-<div class="wrapper bgded overlay" style="background-image:url('images/demo/backgrounds/01.png');">
+<div class="wrapper bgded overlay" style="background-image:url("{% static "images/demo/backgrounds/01.png"%}");">
   <div id="pageintro" class="hoc clear"> 
     <article>
       <p id="greeting">Reserved your parking lot right now.</p>
-	<form id="frm1" action="">
-  <input type="text" name="plateno" placeholder= "Plate No">
-  <input class="btn" type="button" onclick="Reservation()" value="Submit">
+	<form id="frm" action="">
+  <input  type="text"  name="plateno" placeholder= "Plate No">
+  <input id="request" class="btn" name=""type="button" onclick="Reservation()" value="Request">
+  <input id="confirm" class="btn" name=""type="button" onclick="ConfirmReservation()" value="Confirm" display="none">
+  <div id ="spotinfo" display="none"></div>
 </form>
     </article>
 
@@ -152,9 +162,6 @@ window.onload =getLocation;
 </div>
 
 <a id="backtotop" href="#top"><i class="fas fa-chevron-up"></i></a>
-<!-- JAVASCRIPTS -->
-<script src="layout/scripts/jquery.min.js"></script>
-<script src="layout/scripts/jquery.backtotop.js"></script>
-<script src="layout/scripts/jquery.mobilemenu.js"></script>
+
 </body>
 </html>
