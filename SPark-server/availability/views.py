@@ -32,7 +32,8 @@ def retrieve(request):
     # get a spot
     response_data = {}
     response_data['position'] = '33.649022, -117.839450'
-    response_data['price'] = 1
+    response_data['price'] = '1'
+    response_data['spotID'] = '1'
 
     return JsonResponse(response_data);
 
