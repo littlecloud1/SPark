@@ -33,7 +33,7 @@ function showPosition(position) {
     var latlon = new google.maps.LatLng(lat, lon);
 
     var myOptions = {
-    center:latlon,zoom:13,
+    center:latlon,zoom:14,
     mapTypeId:google.maps.MapTypeId.ROADMAP,
     mapTypeControl:false,
     navigationControlOptions:{style:google.maps.NavigationControlStyle.SMALL}
@@ -97,7 +97,7 @@ function Reservation(){
 			});
 			
 			$("#info").html("ID:"+result['spotID'] +
-			"<br> price $"+result['price'] +"/hrs");
+			"     price $"+result['price'] +"/hrs");
 			spotID = result['spotID'];
 			
 			$("#spotinfo").show();
