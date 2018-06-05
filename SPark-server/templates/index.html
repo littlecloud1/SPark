@@ -19,6 +19,7 @@ var map;
 var plate;
 
 function getLocation() {
+	$("#confirm").hide();
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition, showError);
     } else { 
@@ -61,6 +62,7 @@ function showError(error) {
 }
 
 function Reservation(){
+
 	href="../availability/retrieve/";
 	plate = document.getElementById("frm")["plateno"].value;
 	var position = lat + ',' + lon;
@@ -83,6 +85,8 @@ function Reservation(){
 			"<br> price="+result['price']+
 			"<br>position="+result['position']);
 			spotID = result['spotID'];
+			$("#confirm").show();
+			$("#request").hide();
     var lo = new google.maps.LatLng(loc[0], loc[1]);
 	map.setCenter(lo);
 	var marker2 = new google.maps.Marker({
@@ -110,7 +114,11 @@ function  ConfirmReservation(){
             },
             success: function(result){
             console.log(result['result']);
-        }});
+        
+	if(result['result'] == true) $("#spotinfo").html("success!");
+	else $("#spotinfo").html("fail!");
+		
+	}});
     
 
 
@@ -132,9 +140,10 @@ window.onload =getLocation;
     <article>
       <p id="greeting">Reserved your parking lot right now.</p>
 	<form id="frm" action="">
-  <input type="text"  name="plateno" placeholder= "Plate No">
-  <input class="btn" name=""type="button" onclick="Reservation()" value="Request">
-  <div id ="spotinfo" display="none"><input class="btn" name=""type="button" onclick="ConfirmReservation()" value="Confirm"></div>
+  <input  type="text"  name="plateno" placeholder= "Plate No">
+  <input id="request" class="btn" name=""type="button" onclick="Reservation()" value="Request">
+  <input id="confirm" class="btn" name=""type="button" onclick="ConfirmReservation()" value="Confirm" display="none">
+  <div id ="spotinfo" display="none"></div>
 </form>
     </article>
 
