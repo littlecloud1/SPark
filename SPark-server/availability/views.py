@@ -35,7 +35,7 @@ def retrieve(request):
     response_data['price'] = '1'
     response_data['spotID'] = '1'
 
-    return JsonResponse(response_data);
+    return JsonResponse(response_data)
 
 def register(request):
     '''if sensor is not in the database then register'''

@@ -29,18 +29,18 @@
             console.log(result['price']);
             console.log(result['position']);
             console.log(result['spotID']);
-
+            console.log(result);
         }});
     });
 
 
-    href="../availability/confirm/"
+    href2="../availability/confirm/"
     spotID="1"
     plate="1"
 
      $("#btn2").click(function(){
         $.ajax({
-            url: href,
+            url: href2,
             type: 'GET',
             dataType: 'json',
             data:{spotID:spotID,
