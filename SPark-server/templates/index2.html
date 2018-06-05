@@ -17,15 +17,13 @@
 
     href="../availability/retrieve/"
     position="33.649022,-117.839450"
-     plate="1"
 
      $("#btn").click(function(){
         $.ajax({
             url: href,
             type: 'GET',
             dataType: 'json',
-            data:{position:position,
-            plate:plate
+            data:{position:position
             },
             success: function(result){
             console.log(result['price']);
