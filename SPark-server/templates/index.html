@@ -15,9 +15,11 @@
 var lat ;
 var lon ;
 var x = document.getElementById("greeting");
-var map
+var map;
+var plate;
 
 function getLocation() {
+	$("#confirm").hide();
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition, showError);
     } else { 
@@ -29,7 +31,7 @@ function showPosition(position) {
     lat = position.coords.latitude;
     lon = position.coords.longitude;
     var latlon = new google.maps.LatLng(lat, lon)
- 
+	console.log(lat+','+lon);
 
     var myOptions = {
     center:latlon,zoom:14,
@@ -60,8 +62,9 @@ function showError(error) {
 }
 
 function Reservation(){
+
 	href="../availability/retrieve/";
-	var plate = document.getElementById("frm")["plateno"].value;
+	plate = document.getElementById("frm")["plateno"].value;
 	var position = lat + ',' + lon;
 	var price;
 	var loc; 
@@ -73,11 +76,17 @@ function Reservation(){
             success: function(result){
             console.log(result['price']);
             console.log(result['position']);
+			console.log(result['spotID']);
 			loc = result['position'].split(' ').join('');
 			
 			loc = loc.split(',');
-            //$("#doc").html("price="+result['price']+"<br>position="+result['position']);
- 
+			$("#spotinfo").show();
+			$("#spotinfo").html("ID:"+result['spotID'] +
+			"<br> price="+result['price']+
+			"<br>position="+result['position']);
+			spotID = result['spotID'];
+			$("#confirm").show();
+			$("#request").hide();
     var lo = new google.maps.LatLng(loc[0], loc[1]);
 	map.setCenter(lo);
 	var marker2 = new google.maps.Marker({
@@ -90,9 +99,34 @@ function Reservation(){
 	
 	}});
 	
+}
+	
+function  ConfirmReservation(){
+ href="../availability/confirm/"
 	
 
+    $.ajax({
+            url: href,
+            type: 'GET',
+            dataType: 'json',
+            data:{spotID:spotID,
+            plate:plate
+            },
+            success: function(result){
+            console.log(result['result']);
+        
+	if(result['result'] == true) $("#spotinfo").html("success!");
+	else $("#spotinfo").html("fail!");
+		
+	}});
+    
+
+
+
+
 }
+
+
 
 
 window.onload =getLocation;
@@ -106,9 +140,10 @@ window.onload =getLocation;
     <article>
       <p id="greeting">Reserved your parking lot right now.</p>
 	<form id="frm" action="">
-  <input type="text"  name="plateno" placeholder= "Plate No">
-  <p id="locinfo"></p>
-  <input class="btn" name=""type="button" onclick="Reservation()" value="Request">
+  <input  type="text"  name="plateno" placeholder= "Plate No">
+  <input id="request" class="btn" name=""type="button" onclick="Reservation()" value="Request">
+  <input id="confirm" class="btn" name=""type="button" onclick="ConfirmReservation()" value="Confirm" display="none">
+  <div id ="spotinfo" display="none"></div>
 </form>
     </article>
 
