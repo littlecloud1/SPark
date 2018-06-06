@@ -24,6 +24,12 @@ def registerSensor(spotID=1):
     contents = urllib.request.urlopen(href+"spotID=" + str(spotID)).read()
     return contents
 
+def getCarPlate(spotID=1):
+    ''' Send SpotID and get carPlate'''
+
+    href = "http://stoneparse.com/availability/getplate/?"
+    contents = urllib.request.urlopen(href+"spotID=" + str(spotID)).read()
+    return contents
 
 if __name__ == "__main__":
 

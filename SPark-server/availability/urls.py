@@ -21,4 +21,5 @@ urlpatterns = [
     url(r'^retrieve/', views.retrieve),
     url(r'^register/', views.register),
     url(r'^confirm/', views.confirm),
+    url(r'^getplate/', views.getCarPlate),
 ]
