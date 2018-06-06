@@ -2,7 +2,7 @@ import urllib.request
 
 
 def updateSensorStats(spotID=1,available=1,carPlate='ABC'):
-    href="http://ec2-54-183-252-37.us-west-1.compute.amazonaws.com/availability/update/?"
+    href="http://stoneparse.com/availability/update/?"
 
     # parking lot name
     spotID=spotID
@@ -20,7 +20,7 @@ def updateSensorStats(spotID=1,available=1,carPlate='ABC'):
 def registerSensor(spotID=1):
     '''Spot need to register before it starts to update the database'''
 
-    href = "http://ec2-54-183-252-37.us-west-1.compute.amazonaws.com/availability/register/?"
+    href = "http://stoneparse.com/availability/register/?"
     contents = urllib.request.urlopen(href+"spotID=" + str(spotID)).read()
     return contents
 

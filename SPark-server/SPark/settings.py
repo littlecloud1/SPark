@@ -25,8 +25,12 @@ SECRET_KEY = '0-pu8z%=3+ea^4j6kq!(tlo_^@lce4wq^yvh7b31krn&fzy3sq'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['ec2-54-183-252-37.us-west-1.compute.amazonaws.com',
-                 '127.0.0.1']
+ALLOWED_HOSTS = [
+                 '127.0.0.1',
+                 'ec2-54-215-230-210.us-west-1.compute.amazonaws.com',
+                 'stoneparse.com',
+                 '54.215.230.210'
+                 ]
 
 
 # Application definition
@@ -120,7 +124,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+# STATIC_ROOT='/home/ec2-user/SPark/static'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-    '/var/www/static/',
+    # os.path.join(BASE_DIR, "static"),
+    # '/var/www/static/',
 ]
