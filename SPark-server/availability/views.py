@@ -72,6 +72,15 @@ def confirm(request):
 def getCarPlate(request):
     # get a spot
 
-    request.GET.get("spotID", False)
+    spotID=request.GET.get("spotID", False)
 
-    return HttpResponse("123");
+    if spotID != False:
+        try:
+            s=Spot.objects.get(spotID=spotID)
+        except:
+            return HttpResponse("sensor is not registered")
+
+        return HttpResponse(s.reservedCar)
+    else:
+        return HttpResponse("fail to update database")
+
