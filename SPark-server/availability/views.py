@@ -61,16 +61,27 @@ def register(request):
     return HttpResponse("registered")
 
 def confirm(request):
-    # get a spot
+    # make reservation for a spot
 
+    carPlate=request.GET.get("car",False)
+    spotID=request.GET.get("spotID",False)
     response_data = {}
 
-    response_data['result'] = True
+    if spotID != False:
+
+        try:
+            s=Spot.objects.get(spotID=spotID)
+            s.reservedCar = carPlate.lower()
+            response_data['result'] = True
+        except:
+            response_data['result'] = False
+    else:
+        response_data['result'] = False
 
     return JsonResponse(response_data);
 
 def getCarPlate(request):
-    # get a spot
+    # get reserved car plate
 
     spotID=request.GET.get("spotID", False)
 
