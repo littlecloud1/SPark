@@ -30,20 +30,19 @@ def retrieve(request):
     request.GET.get("position", False)
 
     s=Spot.objects.filter(isAvailableNow=True)
-    response_data = {}
 
     num_available = len(s)
     num_total=Spot.objects.all().count()
 
-    utilization_rate=(num_total-num_available)/num_total
+    utilization_rate=float(num_total-num_available)/float(num_total)
 
     pp=pricePredictor()
 
     # get a spot
     response_data = {}
     response_data['position'] = s[0].position
-    response_data['price'] = float(pp.get_price(utilization_rate))
-    response_data['spotID'] = '1'
+    response_data['price'] = pp.get_price(utilization_rate)
+    response_data['spotID'] = s[0].spotID
 
     return JsonResponse(response_data)
 

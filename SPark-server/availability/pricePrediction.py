@@ -17,8 +17,6 @@ class pricePredictor:
         self.regr.fit(data, target)
 
     def get_price(self,utilization_rate):
-        # Make predictions using the testing set
+        # Make predictions using the utilization_rate
         predicion = self.regr.predict(utilization_rate)
-        return predicion
-
-
+        return round(float(predicion),2)
