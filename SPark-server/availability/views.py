@@ -20,7 +20,7 @@ def update(request):
         s.currentCar=carPlate.lower()
         s.save()
 
-        return HttpResponse(s.isAvailableNow)
+        return HttpResponse(s.isBooked)
     else:
         return HttpResponse("fail to update database")
 
@@ -29,7 +29,7 @@ def retrieve(request):
 
     request.GET.get("position", False)
 
-    s=Spot.objects.filter(isAvailableNow=True)
+    s=Spot.objects.filter(isAvailableNow=True,isBooked=False)
 
     num_available = len(s)
     num_total=Spot.objects.all().count()
@@ -76,7 +76,7 @@ def confirm(request):
         try:
             s=Spot.objects.get(spotID=spotID)
             s.reservedCar = carPlate.lower()
-            s.isAvailableNow = False
+            s.isBooked = True
             s.save()
             response_data['result'] = True
         except Exception as e:
