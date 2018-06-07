@@ -63,7 +63,7 @@ def register(request):
 def confirm(request):
     # make reservation for a spot
 
-    carPlate=request.GET.get("car",False)
+    carPlate=request.GET.get("plate",False)
     spotID=request.GET.get("spotID",False)
     response_data = {}
 
@@ -72,8 +72,11 @@ def confirm(request):
         try:
             s=Spot.objects.get(spotID=spotID)
             s.reservedCar = carPlate.lower()
+            s.isAvailableNow = False
+            s.save()
             response_data['result'] = True
-        except:
+        except Exception as e:
+            print(e)
             response_data['result'] = False
     else:
         response_data['result'] = False
