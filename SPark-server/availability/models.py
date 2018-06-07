@@ -6,6 +6,7 @@ class Spot(models.Model):
     currentCar=models.CharField(max_length=20)
     position=models.CharField(max_length=200)
     isAvailableNow=models.BooleanField(default=True)
+    reservedCar = models.CharField(max_length=20)
 
 class AvailableTime(models.Model):
     spot=models.ForeignKey(Spot,on_delete=models.CASCADE)
