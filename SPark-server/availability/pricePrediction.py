@@ -20,3 +20,4 @@ class pricePredictor:
         # Make predictions using the utilization_rate
         predicion = self.regr.predict(utilization_rate)
         return round(float(predicion),2)
+
