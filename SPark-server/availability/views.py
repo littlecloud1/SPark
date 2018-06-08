@@ -71,7 +71,7 @@ def register(request):
 
 
 def confirm(request):
-    # make reservation for a spot
+    '''make reservation for a spot'''
 
     carPlate = request.GET.get("plate", False)
     spotID = request.GET.get("spotID", False)
@@ -95,7 +95,7 @@ def confirm(request):
 
 
 def getCarPlate(request):
-    # get reserved car plate
+    '''get reserved car plate'''
 
     spotID = request.GET.get("spotID", False)
 
