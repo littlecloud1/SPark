@@ -16,10 +16,12 @@ def update(request):
             s = Spot.objects.get(spotID=spotID)
         except:
             return HttpResponse("sensor is not registered")
-        if s.isAvailableNow is not True and s.isBooked:
-            s.isBooked=False
-        s.isAvailableNow = True if available == '1' else False
         s.currentCar = carPlate.lower()
+        if s.isAvailableNow is not True and s.isBooked:
+            s.isBooked = False
+            s.reservedCar = "non"
+            s.currentCar = "non"
+        s.isAvailableNow = True if available == '1' else False
         s.save()
 
         return HttpResponse(s.isBooked)
