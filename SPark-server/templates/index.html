@@ -33,7 +33,7 @@ function showPosition(position) {
     var latlon = new google.maps.LatLng(lat, lon);
 
     var myOptions = {
-    center:latlon,zoom:14,
+    center:latlon,zoom:15,
     mapTypeId:google.maps.MapTypeId.ROADMAP,
     mapTypeControl:false,
     navigationControlOptions:{style:google.maps.NavigationControlStyle.SMALL}
@@ -77,41 +77,55 @@ function Reservation(){
             console.log(result['position']);
 			console.log(result['spotID']);
 			
-			loc = result['position'].split(' ').join('');
-			loc = loc.split(',');
-			var geocoder  = new google.maps.Geocoder;
-			var lo = new google.maps.LatLng(loc[0], loc[1]);
 			
-			geocoder.geocode({'location': lo}, function(results, status) {
-					if (status === 'OK') {
-					  if (results[1]) {
-						
-						console.log(result['1']);
-						$("#addr").html("Address: " +results[1].formatted_address);
-					  } else {
-						window.alert('No results found');
-					  }
-					} else {
-					  window.alert('Geocoder failed due to: ' + status);
-					}
-			});
+			if(result['spotID'] != '0'){
 			
-			$("#info").html("ID:"+result['spotID'] +
-			"     price $"+result['price'] +"/hrs");
-			spotID = result['spotID'];
+				
+				loc = result['position'].split(' ').join('');
+				loc = loc.split(',');
+				var geocoder  = new google.maps.Geocoder;
+				var lo = new google.maps.LatLng(loc[0], loc[1]);
+				
+				geocoder.geocode({'location': lo}, function(results, status) {
+						if (status === 'OK') {
+						  if (results[1]) {
+							
+							console.log(result['1']);
+							$("#addr").html("Address: <a  target='_blank' href =https://www.google.com/maps/search/?api=1&query="+ loc +">" +results[1].formatted_address+"</a>");
+						  } else {
+							window.alert('No results found');
+						  }
+						} else {
+						  window.alert('Geocoder failed due to: ' + status);
+						}
+				});
 			
+				$("#info").html("ID:"+result['spotID'] +
+				"<br> price $"+result['price'] +"/hrs");
+				spotID = result['spotID'];
+				
+				
+				
+				$("#spotinfo").show();
+				$("#confirm").show();
+				$("#request").hide();
+				
+				
+				map.setCenter(lo);
+				var marker2 = new google.maps.Marker({
+					position:lo,
+					map:map,
+					title:"ID: "+result['spotID'] +"   $"+result["price"].toString()+"/hrs" 
+				});
+			}
+			else{
+			
+			$("#info").html("No Cars availabile. Please try again later.");
 			$("#spotinfo").show();
-			$("#confirm").show();
-			$("#request").hide();
+
+			}
 			
 			
-			map.setCenter(lo);
-			var marker2 = new google.maps.Marker({
-				position:lo,
-				map:map,
-				title:"ID: "+result['spotID'] +"   $"+result["price"].toString()+"/hrs" 
-			});
-	
 		}});
 	
 	
@@ -120,23 +134,32 @@ function Reservation(){
 }
 	
 function  ConfirmReservation(){
- href="../availability/confirm/"
+	href="../availability/confirm/";
+	plate = document.getElementById("frm")["plateno"].value;
 
-    $.ajax({
-            url: href,
-            type: 'GET',
-            dataType: 'json',
-            data:{spotID:spotID,
-            plate:plate
-            },
-            success: function(result){
-            console.log(result['result']);
-        
-	if(result['result'] == true) $("#spotinfo").html("success!");
-	else $("#spotinfo").html("fail!");
+	if(plate != ""){
+		$.ajax({
+				url: href,
+				type: 'GET',
+				dataType: 'json',
+				data:{spotID:spotID,
+				plate:plate
+				},
+				success: function(result){
+				console.log(result['result']);
+			
+		if(result['result'] == true) $("#info").html("success!");
+		else $("#info").html("fail!");
+			
+		}});
 		
-	}});
-    
+		$("#confirm").hide();
+		$("#request").show();
+	}
+	else{
+		$("#info").html("Please input plate no.");
+		$("#spotinfo").show();
+	}
 
 
 

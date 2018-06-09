@@ -30,11 +30,10 @@ function getLocation() {
 function showPosition(position) {
     lat = position.coords.latitude;
     lon = position.coords.longitude;
-    var latlon = new google.maps.LatLng(lat, lon)
-	console.log(lat+','+lon);
+    var latlon = new google.maps.LatLng(lat, lon);
 
     var myOptions = {
-    center:latlon,zoom:14,
+    center:latlon,zoom:15,
     mapTypeId:google.maps.MapTypeId.ROADMAP,
     mapTypeControl:false,
     navigationControlOptions:{style:google.maps.NavigationControlStyle.SMALL}
@@ -66,7 +65,7 @@ function Reservation(){
 	href="../availability/retrieve/";
 	plate = document.getElementById("frm")["plateno"].value;
 	var position = lat + ',' + lon;
-	var price;
+
 	var loc; 
 	$.ajax({
             url: href,
@@ -77,49 +76,90 @@ function Reservation(){
             console.log(result['price']);
             console.log(result['position']);
 			console.log(result['spotID']);
-			loc = result['position'].split(' ').join('');
 			
-			loc = loc.split(',');
+			
+			if(result['spotID'] != '0'){
+			
+				
+				loc = result['position'].split(' ').join('');
+				loc = loc.split(',');
+				var geocoder  = new google.maps.Geocoder;
+				var lo = new google.maps.LatLng(loc[0], loc[1]);
+				
+				geocoder.geocode({'location': lo}, function(results, status) {
+						if (status === 'OK') {
+						  if (results[1]) {
+							
+							console.log(result['1']);
+							$("#addr").html("Address: <a  target='_blank' href =https://www.google.com/maps/search/?api=1&query="+ loc +">" +results[1].formatted_address+"</a>");
+						  } else {
+							window.alert('No results found');
+						  }
+						} else {
+						  window.alert('Geocoder failed due to: ' + status);
+						}
+				});
+			
+				$("#info").html("ID:"+result['spotID'] +
+				"<br> price $"+result['price'] +"/hrs");
+				spotID = result['spotID'];
+				
+				
+				
+				$("#spotinfo").show();
+				$("#confirm").show();
+				$("#request").hide();
+				
+				
+				map.setCenter(lo);
+				var marker2 = new google.maps.Marker({
+					position:lo,
+					map:map,
+					title:"ID: "+result['spotID'] +"   $"+result["price"].toString()+"/hrs" 
+				});
+			}
+			else{
+			
+			$("#info").html("No Cars availabile. Please try again later.");
 			$("#spotinfo").show();
-			$("#spotinfo").html("ID:"+result['spotID'] +
-			"<br> price="+result['price']+
-			"<br>position="+result['position']);
-			spotID = result['spotID'];
-			$("#confirm").show();
-			$("#request").hide();
-    var lo = new google.maps.LatLng(loc[0], loc[1]);
-	map.setCenter(lo);
-	var marker2 = new google.maps.Marker({
-		position:lo,
-		map:map,
-		title:"$"+result["price"].toString()
-	});
+
+			}
+			
+			
+		}});
 	
-	 document.getElementById("frm")["plateno"].value;
 	
-	}});
+
 	
 }
 	
 function  ConfirmReservation(){
- href="../availability/confirm/"
-	
+	href="../availability/confirm/";
+	plate = document.getElementById("frm")["plateno"].value;
 
-    $.ajax({
-            url: href,
-            type: 'GET',
-            dataType: 'json',
-            data:{spotID:spotID,
-            plate:plate
-            },
-            success: function(result){
-            console.log(result['result']);
-        
-	if(result['result'] == true) $("#spotinfo").html("success!");
-	else $("#spotinfo").html("fail!");
+	if(plate != ""){
+		$.ajax({
+				url: href,
+				type: 'GET',
+				dataType: 'json',
+				data:{spotID:spotID,
+				plate:plate
+				},
+				success: function(result){
+				console.log(result['result']);
+			
+		if(result['result'] == true) $("#info").html("success!");
+		else $("#info").html("fail!");
+			
+		}});
 		
-	}});
-    
+		$("#confirm").hide();
+		$("#request").show();
+	}
+	else{
+		$("#info").html("Please input plate no.");
+		$("#spotinfo").show();
+	}
 
 
 
@@ -135,27 +175,32 @@ window.onload =getLocation;
 
 
 
-<div class="wrapper bgded overlay" style="background-image:url("{% static "images/demo/backgrounds/01.png"%}");">
-  <div id="pageintro" class="hoc clear"> 
+<div class="wrapper" style="background-color:black;">
+  <div id="pageintro" class="hoc clear" style="padding:100px 0;"> 
     <article>
       <p id="greeting">Reserved your parking lot right now.</p>
 	<form id="frm" action="">
   <input  type="text"  name="plateno" placeholder= "Plate No">
   <input id="request" class="btn" name=""type="button" onclick="Reservation()" value="Request">
-  <input id="confirm" class="btn" name=""type="button" onclick="ConfirmReservation()" value="Confirm" display="none">
-  <div id ="spotinfo" display="none"></div>
+  <input id="confirm" class="btn" name=""type="button" onclick="ConfirmReservation()" value="Confirm" style="display:none;">
+  <div id ="spotinfo" display="none" style="padding:8px 0;">
+  <div id ="info"></div>
+  <div id = "addr"></div></div>
 </form>
     </article>
 
   </div>
 </div>
 
-<div id="googleMap" style="width:100%;height:400px;"></div>
+<div id="googleMap" style="width:100%;height:700px;"></div>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDg1ZIu7sQZsrWM-mnHUeCKyQSuZuVeeDM"></script>
-<div class="wrapper row5">
-  <div id="copyright" class="hoc clear"> 
 
-    <p class="fl_left">Copyright &copy; 2018 - All Rights Reserved - <a href="#">Domain Name</a></p>
+
+
+<div class="wrapper row5" >
+	<div id="copyright" class="hoc clear"> 
+
+    <p class="fl_left">Copyright &copy; 2018 - All Rights Reserved - <a href="#">SPark</a></p>
     <p class="fl_right">Template by <a target="_blank" href="http://www.os-templates.com/" title="Free Website Templates">OS Templates</a></p>
 
   </div>
