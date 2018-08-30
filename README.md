@@ -7,6 +7,11 @@ The goal of this project is to help people find and reserve a parking spot quick
 * Deployed the web server in RESTful structure to provide the service including parking lot appointment. And using linear regression technique to adjust the price.
 * Built the circuit with IoT hardware so that it can detect the incoming car and compare the actual plate number with the plate number received from the server. Then make different responses and interact with the server.
 
+## Requirements
+* Python
+* Django
+* Raspberry pi
+
 ## Files
 The project contains three different part of codes:
 
