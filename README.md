@@ -11,6 +11,17 @@ The goal of this project is to help people find and reserve a parking spot quick
 * Python
 * Django
 * Raspberry pi
+* Scikit-learn
+
+## How To run:
+
+#### To run the SPark server you will have to run below command on your terminal at project folder
+``` bash 
+# run the server
+python SPark-server/manage.py runserver
+``` 
+The website will run in port 8080: <br/>
+ localhost:8080/
 
 ## Files
 The project contains three different part of codes:
