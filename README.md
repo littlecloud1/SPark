@@ -20,8 +20,12 @@ The goal of this project is to help people find and reserve a parking spot quick
 # run the server
 python SPark-server/manage.py runserver
 ``` 
+
+#### Website
 The website will run in port 8080: <br/>
  localhost:8080/
+ **To make sure Google Map Run correctly, you have to use https instead of http**
+ if you have published your website, you have to obtain certificate for your website.
 
 ## Files
 The project contains three different part of codes:
