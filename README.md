@@ -23,7 +23,7 @@ python SPark-server/manage.py runserver
 
 #### Website
 The website will run in port 8080: <br/>
- localhost:8080/
+ localhost:8080/ <br/>
  **To make sure Google Map Run correctly, you have to use https instead of http, and enable location in your browser.** <br/>
  if you have published your website, you have to obtain certificate for your website.
 
